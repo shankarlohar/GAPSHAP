@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gapshap">
+    package="com.shankarlohar.gapshap"
+    xmlns:tools="http://schemas.android.com/tools">
    <application
+        tools:replace="android:label" 
         android:label="gapshap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

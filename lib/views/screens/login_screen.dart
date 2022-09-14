@@ -16,60 +16,62 @@ class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   final AuthController _authController = AuthController();
 
-  late AnimationController controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
+    _controller = AnimationController(
       vsync: this,
     );
-    controller.addStatusListener((status) async {
+    _controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        controller.reset();
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+        _controller.reset();
+        Navigator.pop(context);
       }
     });
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     void showDoneDialog() => showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => Dialog(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Lottie.asset(
-                    "assets/animations/done_animation.json",
-                    repeat: false,
-                    controller: controller,
-                    onLoaded: (composition) {
-                      controller.duration = composition.duration;
-                      controller.forward();
-                    },
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  "assets/animations/done_animation.json",
+                  repeat: false,
+                  controller: _controller,
+                  onLoaded: (composition) {
+                    _controller.duration = composition.duration;
+                    _controller.forward().whenComplete(() =>
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomeScreen.routeName, (route) => false));
+                  },
+                ),
+                Text(
+                  "Logged in Successfully!",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    "Logged in Successfully!",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                ],
-              ),
-            ));
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+              ],
+            ),
+          ),
+        );
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

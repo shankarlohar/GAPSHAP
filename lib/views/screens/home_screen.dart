@@ -35,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight: 100,
+        toolbarHeight: 300,
         elevation: 0,
         backgroundColor: backgroundColor,
-        title: Row(
+        title: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
@@ -58,8 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Lottie.asset(
                   headlineIcon[pageIndex],
-                  height: 100,
-                  width: 100,
+                  height: 200,
+                  width: 200,
                   animate: true,
                 ),
               ],

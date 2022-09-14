@@ -1,4 +1,4 @@
-package com.example.gapshap
+package com.shankarlohar.gapshap
 
 import io.flutter.embedding.android.FlutterActivity
 
