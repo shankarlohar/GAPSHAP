@@ -1,6 +1,6 @@
 # gapshap
 
-A new Flutter project.
+A new Flutter project. Firebase, Lottie, JITSI MEET
 
 ## Getting Started
 
