@@ -5,7 +5,7 @@ class FirestoreController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void addMeetingToFirestore(String meetingName) async {
+  void addMeetingToFirestore(String meetingName, String usedName) async {
     try {
       await _firestore
           .collection("users")
@@ -13,7 +13,9 @@ class FirestoreController {
           .collection("meetings")
           .add({
         "meetingName": meetingName,
+        "usedName": usedName,
         "createdAt": DateTime.now(),
+        "status": "Active",
       });
     } catch (e) {
       print("Firestore Error: $e");

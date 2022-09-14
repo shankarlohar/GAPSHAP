@@ -46,7 +46,7 @@ class SettingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Your email: ",
+                        "Email Address: ",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class SettingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Your phone: ",
+                        "Phone Number: ",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

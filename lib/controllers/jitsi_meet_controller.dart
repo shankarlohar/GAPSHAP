@@ -32,7 +32,7 @@ class JitsiMeetController {
         ..audioMuted = isAudioMuted
         ..videoMuted = isVideoMuted;
 
-      _controller.addMeetingToFirestore(roomName);
+      _controller.addMeetingToFirestore(roomName, name);
       _controller.addMeetingCheck(roomName);
       await JitsiMeet.joinMeeting(options);
     } catch (error) {

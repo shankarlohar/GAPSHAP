@@ -141,7 +141,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                       fillColor: secondaryBackgroundColor,
                       filled: true,
                       border: InputBorder.none,
-                      hintText: "Enter 7 digit ROOM ID here.",
+                      hintText: "Enter 8 digit ROOM ID here.",
                       contentPadding: EdgeInsets.all(10),
                     ),
                     textAlign: TextAlign.center,
