@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gapshap/controllers/auth_controller.dart';
 import 'package:gapshap/controllers/jitsi_meet_controller.dart';
 import 'package:gapshap/controllers/snack_bar.dart';
 import 'package:gapshap/utils/colors.dart';
 import 'package:gapshap/views/screens/widgets/custom_button.dart';
+import 'package:gapshap/views/screens/widgets/meeting_option.dart';
 import 'package:lottie/lottie.dart';
 
 class VideoCallScreen extends StatefulWidget {
@@ -16,8 +18,13 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
   late TextEditingController nameController;
 
+  bool isAudioMuted = true;
+  bool isVideoHidden = true;
+  late bool exist;
+
   final AuthController _authController = AuthController();
   final JitsiMeetController _jitsiMeetController = JitsiMeetController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -28,15 +35,40 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     super.initState();
   }
 
-  void _joinMeeting() {
+  Future<bool> checkExist(String docID) async {
+    try {
+      await _firestore.collection("meetings").doc(docID).get().then((doc) {
+        exist = doc.exists;
+      });
+      return exist;
+    } catch (e) {
+      // If any error
+      return false;
+    }
+  }
+
+  Future<void> _joinMeeting() async {
     if (meetingIdController.text.isNotEmpty) {
-      _jitsiMeetController.createMeeting(
-          roomName: "bySLIA" + meetingIdController.text + "GAPSHAP",
-          username: nameController.text,
-          isAudioMuted: true,
-          isVideoMuted: true);
+      String meeting = "bySLIA" + meetingIdController.text + "GAPSHAP";
+      if (await checkExist(meeting)) {
+        _jitsiMeetController.createMeeting(
+            roomName: meeting,
+            username: nameController.text,
+            isAudioMuted: isAudioMuted,
+            isVideoMuted: isVideoHidden);
+      } else {
+        snackBar(
+          "assets/animations/wrong_input_animation.json",
+          "Invalid meeting ID!",
+          context,
+        );
+      }
     } else {
-      snackBar("Meeting ID cannot be empty.", context);
+      snackBar(
+        "assets/animations/cannot_be_empty_animation.json",
+        "Meeting ID cannot be empty!",
+        context,
+      );
     }
   }
 
@@ -72,7 +104,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 5,
             ),
             Text(
               _authController.user!.displayName!,
@@ -83,8 +115,8 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
             ),
             Lottie.asset(
               "assets/animations/join_meeting_animation.json",
-              height: 350,
-              width: 350,
+              height: 325,
+              width: 325,
               animate: true,
             ),
             Padding(
@@ -103,7 +135,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   ),
                   TextField(
                     controller: meetingIdController,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     maxLines: 1,
                     decoration: InputDecoration(
                       fillColor: secondaryBackgroundColor,
@@ -129,7 +161,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                   ),
                   TextField(
                     controller: nameController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     maxLines: 1,
                     decoration: InputDecoration(
                       fillColor: secondaryBackgroundColor,
@@ -141,7 +173,22 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MeetingOption(
+                        text: "Mute Audio",
+                        isMute: isAudioMuted,
+                        onChange: onAudio,
+                      ),
+                      MeetingOption(
+                        text: "Turn off Video",
+                        isMute: isVideoHidden,
+                        onChange: onVideo,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -151,5 +198,17 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         ),
       ),
     );
+  }
+
+  onAudio(bool value) {
+    setState(() {
+      isAudioMuted = value;
+    });
+  }
+
+  onVideo(bool value) {
+    setState(() {
+      isVideoHidden = value;
+    });
   }
 }

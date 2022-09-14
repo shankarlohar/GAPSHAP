@@ -32,6 +32,7 @@ class AuthController {
             'username': user.displayName,
             'uid': user.uid,
             'profilePhoto': user.photoURL,
+            'phoneNumber': user.phoneNumber,
           });
         }
         return "success";

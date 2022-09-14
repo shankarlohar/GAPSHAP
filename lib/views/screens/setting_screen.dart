@@ -113,9 +113,9 @@ class SettingScreen extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        _authController.user!.uid!,
+                        _authController.user!.uid,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
                         ),
@@ -135,7 +135,12 @@ class SettingScreen extends StatelessWidget {
                   await FirebaseAuth.instance.signOut();
                   Navigator.pushNamedAndRemoveUntil(
                       context, LoginScreen.routeName, (route) => false);
-                  snackBar("You are logged out.", context);
+
+                  snackBar(
+                    "assets/animations/logged_out_animation.json",
+                    "You are logged out!",
+                    context,
+                  );
                 },
               ),
             ),

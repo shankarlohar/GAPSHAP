@@ -116,9 +116,17 @@ class _LoginScreenState extends State<LoginScreen>
               if (res == "success") {
                 showDoneDialog();
               } else if (res == 'failed') {
-                snackBar("Login Failed!", context);
+                snackBar(
+                  "assets/animations/login_failed_animation.json",
+                  "Login Failed!",
+                  context,
+                );
               } else {
-                snackBar(res, context);
+                snackBar(
+                  "assets/animations/something_went_wrong_animation.json",
+                  res,
+                  context,
+                );
               }
             },
           ),

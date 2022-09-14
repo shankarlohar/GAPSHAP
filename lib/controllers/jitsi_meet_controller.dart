@@ -1,8 +1,10 @@
 import 'package:gapshap/controllers/auth_controller.dart';
+import 'package:gapshap/controllers/firestore_controller.dart';
 import 'package:jitsi_meet/feature_flag/feature_flag.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class JitsiMeetController {
+  final FirestoreController _controller = FirestoreController();
   final AuthController _authController = AuthController();
   createMeeting(
       {required String roomName,
@@ -30,6 +32,8 @@ class JitsiMeetController {
         ..audioMuted = isAudioMuted
         ..videoMuted = isVideoMuted;
 
+      _controller.addMeetingToFirestore(roomName);
+      _controller.addMeetingCheck(roomName);
       await JitsiMeet.joinMeeting(options);
     } catch (error) {
       print("JitsiMeet Error: $error");

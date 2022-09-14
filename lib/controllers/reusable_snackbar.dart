@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class ReusableIcon extends StatelessWidget {
-  const ReusableIcon(
+class ReusableSnackbar extends StatelessWidget {
+  const ReusableSnackbar(
       {Key? key,
       required this.lottieAnimation,
       required this.text,
@@ -36,6 +36,8 @@ class ReusableIcon extends StatelessWidget {
               text,
               style: TextStyle(
                 color: Colors.grey,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             )
           ],
